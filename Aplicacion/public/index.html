@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultas de Medicamentos</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 8px 12px; border: 1px solid #ccc; text-align: left; }
+        th { background-color: #f4f4f4; }
+        button { padding: 10px 20px; margin: 10px 0; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+    <h1>Consultas de Medicamentos</h1>
+
+    <h2>Total de Stock por Medicamento (mayor a 5)</h2>
+    <button onclick="fetchData('/stock', 'stock')">Obtener Stock de Medicamentos</button>
+    <table id="stock">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Laboratorio</th>
+                <th>Total Stock</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <h2>Mejores 5 Clientes por Compras</h2>
+    <button onclick="fetchData('/topClientes', 'topClientes')">Obtener Mejores 5 Clientes</button>
+    <table id="topClientes">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Total Compras</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <h2>Medicamentos con Proveedor</h2>
+    <button onclick="fetchData('/medicamentosConProveedor', 'medicamentosConProveedor')">Obtener Medicamentos y Proveedores</button>
+    <table id="medicamentosConProveedor">
+        <thead>
+            <tr>
+                <th>Medicamento</th>
+                <th>Cantidad Disponible</th>
+                <th>Proveedor</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <h2>Medicamentos con Stock Bajo</h2>
+    <button onclick="fetchData('/medicamentosStockBajo', 'medicamentosStockBajo')">Obtener Medicamentos con Stock Bajo</button>
+    <table id="medicamentosStockBajo">
+        <thead>
+            <tr>
+                <th>Medicamento</th>
+                <th>Stock Actual</th>
+                <th>Total Vendido</th>
+                <th>Stock Restante</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <h2>Medicamentos con Stock Menor al Promedio</h2>
+    <button onclick="fetchData('/medicamentosStockPromedio', 'medicamentosStockPromedio')">Obtener Medicamentos con Stock Menor al Promedio</button>
+    <table id="medicamentosStockPromedio">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Cantidad</th>
+                <th>Laboratorio</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <h2>Boletas Ordenadas</h2>
+    <button onclick="fetchData('/boletas', 'boletas')">Obtener Boletas Ordenadas</button>
+    <table id="boletas">
+        <thead>
+            <tr>
+                <th>ID Boleta</th>
+                <th>Fecha</th>
+                <th>Cliente</th>
+                <th>Vendedor</th>
+                <th>Ingreso</th>
+                <th>Cantidad</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <h2>Consultas CRUD</h2>
+    <button onclick="window.location.href='CRUDmedicamentos.html';">Ir a Otra Página</button>
+
+    <script>
+        function fetchData(url, tableId) {
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.querySelector(`#${tableId} tbody`);
+                    tbody.innerHTML = "";
+                    data.forEach(row => {
+                        const tr = document.createElement('tr');
+                        Object.values(row).forEach(value => {
+                            const td = document.createElement('td');
+                            td.textContent = value;
+                            tr.appendChild(td);
+                        });
+                        tbody.appendChild(tr);
+                    });
+                });
+        }
+    </script>
+</body>
+</html>
+
